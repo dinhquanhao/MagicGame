@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#091219">
+  <meta name="description" content="Sân tập phép thuật 3D: điều khiển pháp sư, thử ba kỹ năng và khám phá kế hoạch xây dựng game web hoàn chỉnh.">
+  <title>Aether · Phòng thí nghiệm phép thuật</title>
+  <link rel="icon" href="./assets/sigil.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" href="#lab" aria-label="Aether — sân tập"><img src="./assets/sigil.svg" width="36" height="36" alt=""><span>AETHER<small>PHÒNG THÍ NGHIỆM PHÉP THUẬT</small></span></a>
+    <nav class="main-nav" aria-label="Điều hướng chính"><button class="nav-button active" data-page="lab" aria-current="page">Sân tập <span>01</span></button><button class="nav-button" data-page="roadmap">Lộ trình <span>02</span></button></nav>
+    <div class="header-right"><span class="version-pill"><i></i> DEMO 0.1</span><button id="sound-button" class="icon-button" aria-label="Bật âm thanh" aria-pressed="false" title="Bật âm thanh"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Zm5 4 5 6m0-6-5 6"/></svg></button></div>
+  </header>
+  <main id="lab-page">
+    <section class="workspace-heading"><div><div class="eyebrow">ARCANE RESEARCH / SÂN TẬP 01</div><h1>Một cử chỉ.<br class="mobile-break"> Ba nguồn sức mạnh.</h1><p>Di chuyển, ngắm mục tiêu và cảm nhận từng lần thi triển.</p></div><button id="showcase-button" class="outline-button"><span class="play-icon">▷</span> Xem chuỗi skill</button></section>
+    <div class="lab-layout">
+      <section id="stage" class="stage" aria-label="Sân tập phép thuật tương tác">
+        <canvas id="world" tabindex="0" aria-label="Sân tập 3D. Dùng WASD hoặc phím mũi tên để di chuyển; Q, E, R để dùng skill. Nhấp sân tập để chọn nơi ngắm."></canvas>
+        <div class="stage-vignette"></div>
+        <div class="stage-top"><div class="arena-title"><span class="live-dot"></span> THE OBSIDIAN SANCTUM<small>ĐẤU TRƯỜNG LUYỆN TẬP</small></div><span id="renderer-badge" class="renderer-badge">ĐANG KHỞI TẠO</span></div>
+        <div class="stage-metrics"><div><small>TỔNG SÁT THƯƠNG</small><strong id="total-damage">0</strong></div><span></span><div><small>HẠ MỤC TIÊU</small><strong id="kills">0 <em>/ ∞</em></strong></div></div>
+        <div id="damage-layer" class="damage-layer" aria-hidden="true"></div>
+        <div id="cast-indicator" class="cast-indicator" hidden><span id="cast-text">Đang niệm phép</span><div><i id="cast-progress"></i></div></div>
+        <div id="toast" class="toast" role="status" aria-live="polite">Sân tập đã sẵn sàng</div>
+        <button id="pause-button" class="pause-button" aria-label="Tạm dừng sân tập" aria-pressed="false">Ⅱ</button>
+        <div id="pause-overlay" class="pause-overlay" hidden><span>Ⅱ</span><strong>Sân tập tạm dừng</strong><button id="resume-button" class="solid-button">Tiếp tục</button></div>
+        <div id="joystick" class="joystick" aria-label="Cần điều khiển cảm ứng"><i></i></div>
+        <div class="stage-bottom"><div class="mana-row"><span class="mana-symbol">◈</span><strong>Năng lượng</strong><span><b id="mana-value">100</b> / 100</span></div><div class="mana-track"><i id="mana-fill"></i></div><div class="skill-bar" aria-label="Kỹ năng">
+          <button class="skill-card selected" data-skill="bolt" aria-label="Chọn và thi triển Hỏa tiễn, phím Q"><kbd>Q</kbd><span class="skill-symbol fire-symbol">✦</span><span class="skill-name">Hỏa tiễn<small>ĐẠN PHÉP</small></span><span class="skill-cost">12 ◈</span><span class="cooldown-mask"></span><span class="cooldown-number"></span></button>
+          <button class="skill-card" data-skill="beam" aria-label="Chọn và thi triển Quang tuyến, phím E"><kbd>E</kbd><span class="skill-symbol beam-symbol">ϟ</span><span class="skill-name">Quang tuyến<small>TIA NĂNG LƯỢNG</small></span><span class="skill-cost">22 ◈</span><span class="cooldown-mask"></span><span class="cooldown-number"></span></button>
+          <button class="skill-card" data-skill="nova" aria-label="Chọn và thi triển Tinh vân, phím R"><kbd>R</kbd><span class="skill-symbol nova-symbol">✧</span><span class="skill-name">Tinh vân<small>AOE CHỌN VỊ TRÍ</small></span><span class="skill-cost">32 ◈</span><span class="cooldown-mask"></span><span class="cooldown-number"></span></button>
+        </div></div>
+        <div id="loading" class="loading"><img src="./assets/sigil.svg" width="50" height="50" alt=""><span>Đang đánh thức sân tập…</span></div>
+      </section>
+      <aside class="inspector">
+        <div class="inspector-top"><span class="eyebrow">HỒ SƠ KỸ NĂNG</span><span id="skill-category" class="tag">HỆ HỎA</span></div>
+        <div class="skill-hero"><div id="detail-glyph" class="detail-glyph fire">✦</div><span id="detail-english">EMBER BOLT</span><h2 id="detail-name">Hỏa tiễn</h2><p id="detail-description">Nén lửa tại đầu trượng, phóng một đạn phép bám theo hướng ngắm và bùng nổ khi chạm mục tiêu.</p></div>
+        <div class="detail-stats"><div><small>SÁT THƯƠNG</small><strong id="detail-damage">80</strong></div><div><small>HỒI CHIÊU</small><strong id="detail-cooldown">1.5 <em>giây</em></strong></div><div><small>NIỆM PHÉP</small><strong id="detail-cast">0.35 <em>giây</em></strong></div><div><small>NĂNG LƯỢNG</small><strong id="detail-cost">12 <em>◈</em></strong></div></div>
+        <div class="phase-strip"><span>Niệm phép</span><i>→</i><span>Phóng</span><i>→</i><span>Va chạm</span></div>
+        <button id="cast-button" class="cast-button fire"><span>Thi triển Hỏa tiễn</span><kbd>Q</kbd></button><p class="cast-help">Ngắm bằng chuột hoặc chạm vào sân tập.</p>
+        <div class="tuning-section"><div class="section-label">ĐIỀU CHỈNH TRẢI NGHIỆM</div><label class="range-label" for="fx-intensity">Cường độ hiệu ứng <output id="fx-value">100%</output></label><input id="fx-intensity" type="range" min="30" max="150" value="100" step="10"><label class="select-row" for="quality">Chất lượng <select id="quality"><option value="low">Tiết kiệm</option><option value="medium" selected>Cân bằng</option><option value="high">Chi tiết</option></select></label><label class="switch-row">Rung camera <input id="camera-shake" type="checkbox" checked><span class="switch-ui"></span></label></div>
+        <div class="session-log"><div class="section-label">NHẬT KÝ SÂN TẬP <i></i></div><ol id="event-log" aria-label="Các sự kiện gần đây"><li>Chọn mục tiêu và thử skill đầu tiên.</li></ol></div>
+        <button id="reset-button" class="reset-button">↺ &nbsp; Đặt lại buổi tập</button>
+      </aside>
+    </div>
+    <footer class="lab-footer"><div><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Di chuyển</span><span><b>↗</b> Chuột để ngắm</span><span><kbd>Q</kbd><kbd>E</kbd><kbd>R</kbd> Thi triển</span><span><kbd>Space</kbd> Skill đang chọn</span></div><span class="performance"><i></i><b id="fps">—</b> FPS <em>·</em> <span id="render-mode">3D REALTIME</span></span></footer>
+    <div class="demo-note"><span>PHẠM VI BẢN DEMO</span> Nhân vật dựng bằng hình khối có khớp chuyển động · 3 skill hoạt động · Mục tiêu tự hồi sinh · Chưa có chiến dịch hoặc nhiều người chơi.</div>
+  </main>
+  <main id="roadmap-page" hidden>
+    <section class="roadmap-heading"><div class="eyebrow">TỪ SÂN TẬP ĐẾN GAME HOÀN CHỈNH</div><h1>Xây nền vững.<br><span>Rồi mới mở rộng sức mạnh.</span></h1><p>Làm xong từng cột mốc có thể chơi và kiểm tra được. Hoàn thiện một skill từ đầu đến cuối trước khi nhân rộng thành 15 hệ.</p><div class="roadmap-progress"><div><i id="roadmap-fill"></i></div><span id="roadmap-count">0 / 7 cột mốc</span></div></section>
+    <section id="milestones" class="milestones" aria-label="Lộ trình phát triển"></section>
+    <section class="roadmap-bottom"><div><span class="eyebrow">NGUYÊN TẮC LÀM VIỆC</span><h2>Mỗi vòng, một bước tiến có thể nhìn thấy.</h2><p>Chọn việc → làm → chạy thử → ghi lại hình ảnh → sửa → lưu một phiên bản. Chỉ tăng phạm vi khi trải nghiệm hiện tại đã ổn định.</p></div><button class="solid-button" data-page="lab">Quay lại sân tập ↗</button></section>
+  </main>
+  <footer class="site-footer"><span><img src="./assets/sigil.svg" width="18" height="18" alt=""> AETHER / CASTING LAB</span><span>Một sân tập nhỏ cho những ý tưởng lớn.</span></footer>
+</div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
