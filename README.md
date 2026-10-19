@@ -79,5 +79,5 @@ model GLB có rig và bộ animation trong bước 2 chưa được triển khai
 
 Xem [hướng dẫn chi tiết](Aether-Codex-Handoff/Aether-Demo/README.md) và
 [tài liệu bàn giao](Aether-Codex-Handoff/Aether-Demo/CODEX_HANDOFF.md).
-Tệp `Aether-Codex-Handoff.zip` là gói bàn giao gốc; để lấy cả hướng dẫn mới
-ở thư mục gốc này, dùng **Code → Download ZIP** của repository.
+Để tải toàn bộ mã nguồn và hướng dẫn, dùng **Code → Download ZIP** của
+repository. Không cần lưu thêm một bản ZIP bàn giao bên trong repository.
